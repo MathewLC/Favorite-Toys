@@ -2,21 +2,20 @@ package com.example.favoritetoys
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mToysListTextView: TextView
+    private lateinit var mSearchBoxEditText: EditText
+    private lateinit var mUrlDisplayTextView: TextView
+    private lateinit var mSearchResultsTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mToysListTextView = findViewById(R.id.tv_toy_names)
-        val toyNames = ToyBox.getToyNames()
-
-        toyNames.forEach { toyName ->
-            mToysListTextView.append("$toyName \n\n\n")
-        }
+        mSearchBoxEditText = findViewById(R.id.et_search_box)
+        mUrlDisplayTextView = findViewById(R.id.tv_url_display)
+        mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
     }
 }
