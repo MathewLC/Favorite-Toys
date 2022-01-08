@@ -2,6 +2,7 @@ package com.example.favoritetoys
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.favoritetoys.R.id.action_search
 import com.example.favoritetoys.utilities.NetworkUtils
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,11 +26,25 @@ class MainActivity : AppCompatActivity() {
         mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
     }
 
-    fun makeGithubSearchQuery(){
+    private fun makeGithubSearchQuery(){
         val query = mSearchBoxEditText.text.toString()
         val url = NetworkUtils.buildUrl(query)
         mUrlDisplayTextView.text = url.toString()
 
+
+        val response =
+            try {
+                url?.let {
+                    NetworkUtils.getResponseFromHttpUrl(url)
+                }
+            } catch (ex: IOException){
+                Log.d("MainActivity",ex.stackTrace.toString())
+                null
+            }
+
+        response?.let {
+            mSearchResultsTextView.text = response
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
