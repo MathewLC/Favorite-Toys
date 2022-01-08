@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.*
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.transition.Visibility
 import com.example.favoritetoys.R.id.action_search
 import com.example.favoritetoys.utilities.NetworkUtils
 import java.io.IOException
@@ -20,12 +23,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mUrlDisplayTextView: TextView
     private lateinit var mSearchResultsTextView: TextView
 
+    private lateinit var mErrorMessageTextView: TextView
+    private lateinit var mProgressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mSearchBoxEditText = findViewById(R.id.et_search_box)
         mUrlDisplayTextView = findViewById(R.id.tv_url_display)
         mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
+
+        mErrorMessageTextView = findViewById(R.id.tv_error_message_display)
+        mProgressBar = findViewById(R.id.pb_loading_indicator)
     }
 
     /**
@@ -43,7 +52,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun showJsonDataView() {
+        mSearchResultsTextView.visibility = VISIBLE
+        mErrorMessageTextView.visibility = INVISIBLE
+    }
+
+    private fun showErrorMessage() {
+        mSearchResultsTextView.visibility = INVISIBLE
+        mErrorMessageTextView.visibility = VISIBLE
+    }
+
     inner class GithubQueryTask : AsyncTask<URL, Void, String>() {
+
+        override fun onPreExecute() {
+            mProgressBar.visibility = VISIBLE
+        }
 
         override fun doInBackground(vararg params: URL?): String? {
             val searchUrl = params[0]
@@ -57,9 +80,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: String?) {
+            mProgressBar.visibility = GONE
+
             result?.let {
-                mSearchResultsTextView.text = if(result.isNotEmpty()) result else ""
+                if (result.isNotEmpty()) {
+                    mSearchResultsTextView.text = result
+                    showJsonDataView()
+                }
             }
+
+            if (result.isNullOrBlank()) showErrorMessage()
         }
 
     }
