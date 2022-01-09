@@ -28,7 +28,11 @@ class GreenAdapter
  * for the ListItemClickListener.
  *
  * @param numberOfItems Number of items to display in list
- */(private val mNumberItems: Int) : Adapter<GreenAdapter.NumberViewHolder>() {
+ */(
+    private val mNumberItems: Int,
+    private val mOnClickListener: ListItemClickListener
+ ) : Adapter<GreenAdapter.NumberViewHolder>() {
+
     /**
      *
      * This gets called when each new ViewHolder is created. This happens when the RecyclerView
@@ -41,6 +45,10 @@ class GreenAdapter
      * for more details.
      * @return A new NumberViewHolder that holds the View for each list item
      */
+
+    interface ListItemClickListener {
+        fun onListItemClick(itemClicked: Int)
+    }
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -92,10 +100,14 @@ class GreenAdapter
      * Cache of the children views for a list item.
      */
     inner class NumberViewHolder(itemView: View) :
-        ViewHolder(itemView) {
+        ViewHolder(itemView), View.OnClickListener {
         // Will display the position in the list, ie 0 through getItemCount() - 1
-        var listItemNumberView: TextView = itemView.findViewById(R.id.tv_item_number)
+        private var listItemNumberView: TextView = itemView.findViewById(R.id.tv_item_number)
         var viewHolderIndex: TextView = itemView.findViewById(R.id.tv_view_holder_instance)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
         /**
          * A method we wrote for convenience. This method will take an integer as input and
          * use that integer to display the appropriate text within a list item.
@@ -105,6 +117,9 @@ class GreenAdapter
             listItemNumberView.text = listIndex.toString()
         }
 
+        override fun onClick(v: View?) {
+            mOnClickListener.onListItemClick(bindingAdapterPosition)
+        }
     }
 
 

@@ -20,12 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
-
-
-
-
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
 
     private lateinit var mSearchBoxEditText: EditText
     private lateinit var mUrlDisplayTextView: TextView
@@ -36,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mAdapter: GreenAdapter
     private lateinit var mNumbersList: RecyclerView
+
+    private var mToast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         /*
          * The GreenAdapter is responsible for displaying each item in the list.
          */
-        mAdapter = GreenAdapter(NUM_LIST_ITEMS);
+        mAdapter = GreenAdapter(NUM_LIST_ITEMS,this)
 
         mNumbersList.adapter = mAdapter
     }
@@ -132,8 +129,17 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     companion object{
         private const val NUM_LIST_ITEMS = 100
+    }
+
+    override fun onListItemClick(itemClicked: Int) {
+        mToast?.cancel()
+        val toastMessage = "Item #$itemClicked clicked."
+        mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT)
+        mToast?.show()
+
     }
 
 
