@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
+import com.example.favoritetoys.utilities.ColorUtils
 
 
 /**
@@ -51,7 +52,15 @@ class GreenAdapter
         val shouldAttachToParentImmediately = false
         val view =
             inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately)
-        return NumberViewHolder(view)
+
+        var viewHolder = NumberViewHolder(view)
+        viewHolder.viewHolderIndex.text = "ViewHolder index: $viewHolderCount"
+        view.setBackgroundColor(
+            ColorUtils.getViewHolderBackgroundColorFromInstance(viewGroup.context, viewHolderCount)
+        )
+        viewHolderCount++
+        Log.d(TAG, "onCreateViewHolder: number of ViewHolders created: $viewHolderCount")
+        return viewHolder
     }
 
     /**
@@ -85,8 +94,8 @@ class GreenAdapter
     inner class NumberViewHolder(itemView: View) :
         ViewHolder(itemView) {
         // Will display the position in the list, ie 0 through getItemCount() - 1
-        var listItemNumberView: TextView
-
+        var listItemNumberView: TextView = itemView.findViewById(R.id.tv_item_number)
+        var viewHolderIndex: TextView = itemView.findViewById(R.id.tv_view_holder_instance)
         /**
          * A method we wrote for convenience. This method will take an integer as input and
          * use that integer to display the appropriate text within a list item.
@@ -96,21 +105,11 @@ class GreenAdapter
             listItemNumberView.text = listIndex.toString()
         }
 
-        /**
-         * Constructor for our ViewHolder. Within this constructor, we get a reference to our
-         * TextViews and set an onClickListener to listen for clicks. Those will be handled in the
-         * onClick method below.
-         * @param itemView The View that you inflated in
-         * [GreenAdapter.onCreateViewHolder]
-         */
-        init {
-            listItemNumberView = itemView.findViewById<View>(R.id.tv_item_number) as TextView
-        }
     }
-
 
 
     companion object {
         private val TAG = GreenAdapter::class.java.simpleName
+        private var viewHolderCount: Int = 0
     }
 }
