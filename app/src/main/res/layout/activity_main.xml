@@ -39,18 +39,12 @@
             android:textSize="22sp"
             android:padding="16dp"
             android:visibility="invisible"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:id="@+id/tv_github_search_results_json"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start and make a search!!"
-                android:textSize="18sp" />
-        </ScrollView>
+        <!--TODO (2) Replace the TextView with a RecyclerView with an id of "@+id/rv_numbers"-->
+        <!--TODO (3) Make the width and height of the RecyclerView match_parent-->
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rv_numbers"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
     </FrameLayout>
 
 
