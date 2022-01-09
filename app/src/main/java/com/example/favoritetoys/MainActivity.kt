@@ -16,6 +16,14 @@ import com.example.favoritetoys.R.id.action_search
 import com.example.favoritetoys.utilities.NetworkUtils
 import java.io.IOException
 import java.net.URL
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+
+
+
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,15 +34,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mErrorMessageTextView: TextView
     private lateinit var mProgressBar: ProgressBar
 
+    private lateinit var mAdapter: GreenAdapter
+    private lateinit var mNumbersList: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mSearchBoxEditText = findViewById(R.id.et_search_box)
         mUrlDisplayTextView = findViewById(R.id.tv_url_display)
-        mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
+        //mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
 
         mErrorMessageTextView = findViewById(R.id.tv_error_message_display)
         mProgressBar = findViewById(R.id.pb_loading_indicator)
+
+        mNumbersList = findViewById(R.id.rv_numbers)
+
+        val layoutManager = LinearLayoutManager(this)
+        mNumbersList.layoutManager = layoutManager
+        mNumbersList.setHasFixedSize(true)
+
+        /*
+         * The GreenAdapter is responsible for displaying each item in the list.
+         */
+        mAdapter = GreenAdapter(NUM_LIST_ITEMS);
+
+        mNumbersList.adapter = mAdapter
     }
 
     /**
@@ -53,12 +77,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showJsonDataView() {
-        mSearchResultsTextView.visibility = VISIBLE
+       // mSearchResultsTextView.visibility = VISIBLE
         mErrorMessageTextView.visibility = INVISIBLE
     }
 
     private fun showErrorMessage() {
-        mSearchResultsTextView.visibility = INVISIBLE
+        //mSearchResultsTextView.visibility = INVISIBLE
         mErrorMessageTextView.visibility = VISIBLE
     }
 
@@ -84,7 +108,8 @@ class MainActivity : AppCompatActivity() {
 
             result?.let {
                 if (result.isNotEmpty()) {
-                    mSearchResultsTextView.text = result
+                    //TODO - Use the new recyclerview after its implemented
+                    //mSearchResultsTextView.text = result
                     showJsonDataView()
                 }
             }
@@ -106,6 +131,9 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+    companion object{
+        private const val NUM_LIST_ITEMS = 100
     }
 
 

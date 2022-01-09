@@ -40,6 +40,7 @@ class GreenAdapter
      * for more details.
      * @return A new NumberViewHolder that holds the View for each list item
      */
+
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
@@ -106,6 +107,8 @@ class GreenAdapter
             listItemNumberView = itemView.findViewById<View>(R.id.tv_item_number) as TextView
         }
     }
+
+
 
     companion object {
         private val TAG = GreenAdapter::class.java.simpleName
