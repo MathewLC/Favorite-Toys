@@ -133,19 +133,19 @@ class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
 
     companion object{
         private const val NUM_LIST_ITEMS = 100
+        const val ITEM_TEXT_EXTRA = "ITEM_TEXT_EXTRA"
     }
 
     override fun onListItemClick(itemClicked: Int) {
-
+        mToast?.cancel()
+        val toastMessage = "Item #$itemClicked clicked."
+        mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT)
+        mToast?.show()
 
         val destinationActivity = ChildActivity::class.java
         val intent = Intent(this,destinationActivity)
+            .putExtra(ITEM_TEXT_EXTRA, toastMessage)
         startActivity(intent)
-
-        mToast?.cancel()
-        val toastMessage = "Item #$itemClicked clicked. Starting new Activity for this item"
-        mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT)
-        mToast?.show()
 
     }
 
