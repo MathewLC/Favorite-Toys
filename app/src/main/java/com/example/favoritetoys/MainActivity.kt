@@ -1,5 +1,6 @@
 package com.example.favoritetoys
 
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -135,8 +136,14 @@ class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
     }
 
     override fun onListItemClick(itemClicked: Int) {
+
+
+        val destinationActivity = ChildActivity::class.java
+        val intent = Intent(this,destinationActivity)
+        startActivity(intent)
+
         mToast?.cancel()
-        val toastMessage = "Item #$itemClicked clicked."
+        val toastMessage = "Item #$itemClicked clicked. Starting new Activity for this item"
         mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT)
         mToast?.show()
 
