@@ -144,3 +144,8 @@ class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
 
 
 }
+
+
+// Do steps 6 & 7 in ChildActivity.java
+// TODO (6) Create a TextView field to display your message
+// TODO (7) Get a reference to your TextView in Java
