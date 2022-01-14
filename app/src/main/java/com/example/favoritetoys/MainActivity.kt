@@ -13,12 +13,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.transition.Visibility
-import com.example.favoritetoys.R.id.action_search
 import com.example.favoritetoys.utilities.NetworkUtils
 import java.io.IOException
 import java.net.URL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.favoritetoys.R.id.*
 
 
 class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
@@ -124,10 +124,17 @@ class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == action_search) {
-            makeGithubSearchQuery()
-            return true
+        when (id) {
+            action_search -> {
+                makeGithubSearchQuery()
+                return true
+            }
+            action_intent -> {
+                val intent = Intent(this,IntentActivity::class.java)
+                startActivity(intent)
+            }
         }
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -151,8 +158,3 @@ class MainActivity : AppCompatActivity(), GreenAdapter.ListItemClickListener {
 
 
 }
-
-
-// Do steps 6 & 7 in ChildActivity.java
-// TODO (6) Create a TextView field to display your message
-// TODO (7) Get a reference to your TextView in Java
