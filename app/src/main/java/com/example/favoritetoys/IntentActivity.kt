@@ -1,6 +1,7 @@
 package com.example.favoritetoys
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,7 +33,14 @@ class IntentActivity : AppCompatActivity() {
      * @param v Button that was clicked.
      */
     fun onClickOpenAddressButton(v: View) {
-        Toast.makeText(this, "TODO: Open a map when this button is clicked", Toast.LENGTH_SHORT).show();
+        val address = "Piracicaba, SP - Brasil"
+        val uri = Uri.Builder()
+            .scheme("geo")
+            .path("0,0")
+            .appendQueryParameter("q", address)
+            .build()
+
+        showMap(uri)
     }
 
     /**
@@ -61,11 +69,18 @@ class IntentActivity : AppCompatActivity() {
             .show();
     }
 
-    fun openWebPage(url: String){
+    private fun openWebPage(url: String){
         val uri = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW,uri)
         startActivity(intent)
         Toast.makeText(this, "Opening $url", Toast.LENGTH_SHORT).show();
+    }
+
+    private fun showMap(uri: Uri){
+        val intent = Intent(Intent.ACTION_VIEW,uri)
+        if(intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
 }
