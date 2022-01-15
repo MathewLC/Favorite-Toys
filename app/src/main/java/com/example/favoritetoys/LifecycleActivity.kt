@@ -15,7 +15,6 @@ class LifecycleActivity : AppCompatActivity() {
      * "Reset Log"
      */
     private lateinit var mLifecycleDisplay: TextView
-
     /**
      * Called when the activity is first created. This is where you should do all of your normal
      * static set up: create views, bind data to lists, etc.
@@ -35,6 +34,9 @@ class LifecycleActivity : AppCompatActivity() {
                 mLifecycleDisplay.text = savedInstanceState.getString(LIFECYCLE_CALLBACKS_TEXT_KEY)
             }
         }
+
+        mLifecycleCallbacks.forEach { mLifecycleDisplay.append("$it \n") }
+        mLifecycleCallbacks.clear()
 
         logAndAppend(ON_CREATE)
     }
@@ -56,6 +58,7 @@ class LifecycleActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        mLifecycleCallbacks.add(0,ON_STOP)
         logAndAppend(ON_STOP)
     }
 
@@ -66,6 +69,8 @@ class LifecycleActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        mLifecycleCallbacks.add(0,ON_DESTROY)
         logAndAppend(ON_DESTROY)
     }
 
@@ -83,9 +88,9 @@ class LifecycleActivity : AppCompatActivity() {
      * @param lifecycleEvent The name of the event to be logged.
      */
     fun logAndAppend(lifecycleEvent: String) {
-        Log.d(TAG, "Lifecycle Event: " + lifecycleEvent);
+        Log.d(TAG, "Lifecycle Event: $lifecycleEvent")
 
-        mLifecycleDisplay.append(lifecycleEvent + "\n");
+        mLifecycleDisplay.append(lifecycleEvent + "\n")
     }
 
     /**
@@ -94,7 +99,7 @@ class LifecycleActivity : AppCompatActivity() {
      * @param view The View that was clicked. In this case, it is the Button from our layout.
      */
     fun resetLifecycleDisplay(view: String) {
-        mLifecycleDisplay.setText("Lifecycle callbacks:\n");
+        mLifecycleDisplay.text = "Lifecycle callbacks:\n"
     }
 
     companion object {
@@ -108,13 +113,15 @@ class LifecycleActivity : AppCompatActivity() {
         private val LIFECYCLE_CALLBACKS_TEXT_KEY = "LIFECYCLE_CALLBACKS_TEXT_KEY"
 
         /* Constant values for the names of each respective lifecycle callback */
-        private val ON_CREATE: String = "onCreate"
-        private val ON_START: String = "onStart"
-        private val ON_RESUME: String = "onResume"
-        private val ON_PAUSE: String = "onPause"
-        private val ON_STOP: String = "onStop"
-        private val ON_RESTART: String = "onRestart"
-        private val ON_DESTROY: String = "onDestroy"
-        private val ON_SAVE_INSTANCE_STATE: String = "onSaveInstanceState"
+        private const val ON_CREATE: String = "onCreate"
+        private const val ON_START: String = "onStart"
+        private const val ON_RESUME: String = "onResume"
+        private const val ON_PAUSE: String = "onPause"
+        private const val ON_STOP: String = "onStop"
+        private const val ON_RESTART: String = "onRestart"
+        private const val ON_DESTROY: String = "onDestroy"
+        private const val ON_SAVE_INSTANCE_STATE: String = "onSaveInstanceState"
+
+        private val mLifecycleCallbacks = mutableListOf<String>()
     }
 }
