@@ -12,8 +12,8 @@ class ChildActivity : AppCompatActivity() {
         setContentView(R.layout.activity_child)
         _display_text = findViewById(R.id.tv_display)
 
-        if(intent.hasExtra(MainActivity.ITEM_TEXT_EXTRA)){
-            val text = intent.getStringExtra(MainActivity.ITEM_TEXT_EXTRA)
+        if(intent.hasExtra(GreenRecyclerActivity.ITEM_TEXT_EXTRA)){
+            val text = intent.getStringExtra(GreenRecyclerActivity.ITEM_TEXT_EXTRA)
             _display_text.text = text
         }
     }
