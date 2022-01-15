@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 
 class IntentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,10 @@ class IntentActivity : AppCompatActivity() {
      * @param v Button that was clicked.
      */
     fun onClickShareTextButton(v: View) {
-        Toast.makeText(this, "TODO: Share text when this is clicked", Toast.LENGTH_LONG).show();
+        val textToShare = "Random text to share"
+
+        shareText(textToShare)
+        Toast.makeText(this, "Sharing $textToShare", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -63,24 +67,38 @@ class IntentActivity : AppCompatActivity() {
      * @param v Button that was clicked.
      */
     fun createYourOwn(v: View) {
-        Toast.makeText(this,
+        Toast.makeText(
+            this,
             "TODO: Create Your Own Implicit Intent",
-            Toast.LENGTH_SHORT)
+            Toast.LENGTH_SHORT
+        )
             .show();
     }
 
-    private fun openWebPage(url: String){
+    private fun openWebPage(url: String) {
         val uri = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW,uri)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
         Toast.makeText(this, "Opening $url", Toast.LENGTH_SHORT).show();
     }
 
-    private fun showMap(uri: Uri){
-        val intent = Intent(Intent.ACTION_VIEW,uri)
-        if(intent.resolveActivity(packageManager) != null) {
+    private fun showMap(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         }
+    }
+
+    fun shareText(text: String) {
+        val mimeType = "text/plain"
+        val title = "Chosse the app to share"
+        val intent = ShareCompat.IntentBuilder(this)
+            .setType(mimeType)
+            .setChooserTitle(title)
+            .setText(text)
+            .intent
+
+        startActivity(intent)
     }
 
 }
