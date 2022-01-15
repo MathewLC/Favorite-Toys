@@ -2,6 +2,7 @@ package com.example.favoritetoys
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.widget.TextView
 
@@ -28,6 +29,12 @@ class LifecycleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lifecycle);
 
         mLifecycleDisplay = findViewById(R.id.tv_lifecycle_events_display)
+
+        savedInstanceState?.let {
+            if (savedInstanceState.containsKey(LIFECYCLE_CALLBACKS_TEXT_KEY)) {
+                mLifecycleDisplay.text = savedInstanceState.getString(LIFECYCLE_CALLBACKS_TEXT_KEY)
+            }
+        }
 
         logAndAppend(ON_CREATE)
     }
@@ -62,6 +69,12 @@ class LifecycleActivity : AppCompatActivity() {
         logAndAppend(ON_DESTROY)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        logAndAppend(ON_SAVE_INSTANCE_STATE)
+        outState.putString(LIFECYCLE_CALLBACKS_TEXT_KEY, mLifecycleDisplay.text.toString())
+    }
+
     /**
      * Logs to the console and appends the lifecycle method name to the TextView so that you can
      * view the series of method callbacks that are called both from the app and from within
@@ -91,6 +104,8 @@ class LifecycleActivity : AppCompatActivity() {
         * being posted.
         */
         val TAG = LifecycleActivity::class.simpleName
+
+        private val LIFECYCLE_CALLBACKS_TEXT_KEY = "LIFECYCLE_CALLBACKS_TEXT_KEY"
 
         /* Constant values for the names of each respective lifecycle callback */
         private val ON_CREATE: String = "onCreate"
