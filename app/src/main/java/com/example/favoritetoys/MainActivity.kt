@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickOpenLifeCycleActivityButton(v: View) {
-//        val intent = Intent(this,IntentActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this,LifecycleActivity::class.java)
+        startActivity(intent)
     }
 
 
