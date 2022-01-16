@@ -25,12 +25,25 @@ class GitHubSearchActivity : AppCompatActivity() {
     private lateinit var mProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_git_hub_search)
 
         mSearchBoxEditText = findViewById(R.id.et_search_box)
         mUrlDisplayTextView = findViewById(R.id.tv_url_display)
         mSearchResultsTextView = findViewById(R.id.tv_github_search_results_json)
+
+        savedInstanceState?.let {
+            if(savedInstanceState.containsKey(QUERY_URL_KEY))
+            {
+                mUrlDisplayTextView.text = savedInstanceState.getString(QUERY_URL_KEY)
+            }
+
+            if(savedInstanceState.containsKey(RESULT_JSON_KEY))
+            {
+                mSearchResultsTextView.text = savedInstanceState.getString(RESULT_JSON_KEY)
+            }
+        }
 
         mErrorMessageTextView = findViewById(R.id.tv_error_message_display)
         mProgressBar = findViewById(R.id.pb_loading_indicator)
@@ -108,5 +121,19 @@ class GitHubSearchActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putString(QUERY_URL_KEY,mUrlDisplayTextView.text.toString() )
+            putString(RESULT_JSON_KEY, mSearchResultsTextView.text.toString())
+        }
+
+    }
+
+    companion object {
+        const val QUERY_URL_KEY = "QUERY_URL_KEY"
+        const val RESULT_JSON_KEY = "RESULT_JSON_KEY"
     }
 }
